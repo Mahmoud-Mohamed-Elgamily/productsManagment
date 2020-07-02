@@ -1,0 +1,17 @@
+#extraContent {
+  margin: 10px 0 25px 40px;
+}
+
+#extraContent ul{
+  padding: 0;
+}
+
+.form-options {
+  display: flex;
+  list-style: none;
+  margin-bottom: 15px;
+}
+
+input.spectrum.with-add-on{
+  padding-left: 3px;
+}
