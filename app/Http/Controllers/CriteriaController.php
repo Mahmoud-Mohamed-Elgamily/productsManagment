@@ -160,7 +160,8 @@ class CriteriaController extends AppBaseController
 
   public function getDetails($id)
   {
-    $criteria = $this->criteriaRepository->find($id);
+
+    $criteria = $this->criteriaRepository->find(explode(',',$id));
     if (empty($criteria)) {
       return response()->json('failed to find this criteria', 401);
     }
