@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -19,10 +19,7 @@ class Criteria extends Model
 
   public $table = 'criterias';
 
-
   protected $dates = ['deleted_at'];
-
-
 
   public $fillable = [
     'name',
@@ -30,11 +27,6 @@ class Criteria extends Model
     'details'
   ];
 
-  /**
-   * The attributes that should be casted to native types.
-   *
-   * @var array
-   */
   protected $casts = [
     'id' => 'integer',
     'name' => 'string',
@@ -42,14 +34,14 @@ class Criteria extends Model
     'details' => 'json',
   ];
 
-  /**
-   * Validation rules
-   *
-   * @var array
-   */
   public static $rules = [
     'name' => 'required|min:3|unique:criterias',
     'type' => 'required',
     'details' => 'required',
   ];
+
+  public function products()
+  {
+    return $this->belongsToMany(\App\Models\Product::class);
+  }
 }

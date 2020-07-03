@@ -13,7 +13,12 @@
       <tr>
         <td>{{ $criteria->name }}</td>
         <td>{{ $criteria->type }}</td>
-        <td>{{ implode(' , ',$criteria->details) }}</td>
+        <td>
+          @foreach ($criteria->details as $detail)
+          <span class="single-detail" style="background-color: <?php echo $detail ?>"> {{ $detail }} </span>
+          @endforeach
+
+        </td>
         <td>
           {!! Form::open(['route' => ['criterias.destroy', $criteria->id], 'method' => 'delete']) !!}
           <div class='btn-group'>

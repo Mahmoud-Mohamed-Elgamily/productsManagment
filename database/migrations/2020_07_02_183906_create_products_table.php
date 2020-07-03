@@ -21,8 +21,8 @@ class CreateProductsTable extends Migration
             $table->string('vendor');
             $table->integer('sale');
             $table->string('mainImagePath');
-            $table->integer('criteria_id')->unsigned();
-            $table->foreign('criteria_id')->references('id')->on('criterias');
+            // $table->integer('criteria_id')->unsigned();
+            // $table->foreign('criteria_id')->references('id')->on('criterias');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -6,7 +6,7 @@
         <th>Vendor</th>
         <th>Sale</th>
         <th>Mainimagepath</th>
-        <th>Criteria Id</th>
+        <th>Criteria</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>

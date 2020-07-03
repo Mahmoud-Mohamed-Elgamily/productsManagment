@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css')
+<link rel="stylesheet" href="/css/criteria.css">
+@endsection
+
 @section('content')
     <section class="content-header">
         <h1 class="pull-left">Criterias</h1>
@@ -19,7 +23,7 @@
             </div>
         </div>
         <div class="text-center">
-        
+
         </div>
     </div>
 @endsection

@@ -5,3 +5,6 @@
 #extraContent ul{
   padding: 0;
 }
+.PricedCriteria , .PricelessCriteria{
+  margin-bottom: 15px;
+}

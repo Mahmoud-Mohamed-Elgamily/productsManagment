@@ -15,3 +15,9 @@
 input.spectrum.with-add-on{
   padding-left: 3px;
 }
+
+span.single-detail {
+  display: inline-block;
+  padding: 3px;
+  color: black;
+}

@@ -58,10 +58,10 @@ class ProductController extends AppBaseController
     $coverPath = $request->file('mainImagePath')->store('public/images');
 
     $input = $request->all();
-
+    dd($request);
     $product = $this->productRepository->create($input);
     $product->update(['mainImagePath' => Storage::url($coverPath)]);
-    // dd($product);
+
     Flash::success('Product saved successfully.');
 
     return redirect(route('products.index'));

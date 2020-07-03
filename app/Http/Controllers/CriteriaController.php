@@ -54,10 +54,13 @@ class CriteriaController extends AppBaseController
    */
   public function store(CreateCriteriaRequest $request)
   {
+    $details = $request->request->get('details');
     $input = $request->all();
     // dd($input);
 
     $criteria = $this->criteriaRepository->create($input);
+    if (gettype($details) == 'string')
+      $criteria->update(['details' => [$details]]);
 
     Flash::success('Criteria saved successfully.');
 
@@ -158,7 +161,7 @@ class CriteriaController extends AppBaseController
   public function getDetails($id)
   {
     $criteria = $this->criteriaRepository->find($id);
-    if(empty($criteria)){
+    if (empty($criteria)) {
       return response()->json('failed to find this criteria', 401);
     }
     return response()->json($criteria, 200);

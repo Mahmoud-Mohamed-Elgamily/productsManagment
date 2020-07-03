@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="/css/criteria.css">
+<link rel="stylesheet" href="/css/product.css">
 @endsection
 
 @section('content')
