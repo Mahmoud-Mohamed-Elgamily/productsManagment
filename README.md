@@ -2,21 +2,21 @@
 simple app to manage adding products with specific criteria to ecommerce platform
 
 ## Installation
-​
+
 $ git clone https://github.com/Mahmoud-Mohamed-Elgamily/productsManagment.git
 $ composer install
 $ php artisan storage:link 
 $ npm i
 $ npm run dev
-​
+
 configure .env file with database credentials then run the following command
 
 $ php artisan migrate
 
 $ php artisan serve
 
-​
-##Workflow
+
+## Workflow
 - setting up DataBase
 - intializing required models and controllers
 - working on views
