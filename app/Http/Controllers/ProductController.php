@@ -58,9 +58,86 @@ class ProductController extends AppBaseController
     $coverPath = $request->file('mainImagePath')->store('public/images');
 
     $input = $request->all();
-    dd($request);
+    $pricedObject = [];
+    $pricelessObject = [];
+
+    // dd($request->request);
+
+    // fill pricedObject
+    $iterationCount = $request->request->get('pricedCount');
+    for ($i = 0; $i < $iterationCount; $i++) {
+      if ($request->request->get('pricedNormal')) {
+        $pricedNormal = $request->request->get('pricedNormal');
+        $pricedObject[$i]['normal'] = $pricedNormal[$i];
+      }
+
+      if ($request->request->get('pricedNested')) {
+        $pricedNested = $request->request->get('pricedNested');
+        $loopLength = count($pricedNested) / $iterationCount;
+        $pricedObject[$i]['nested'] = [];
+
+        for ($x = 0; $x < $loopLength; $x++) {
+          array_push($pricedObject[$i]['nested'], $pricedNested[$x + $i * $loopLength]);
+        }
+      }
+
+      if ($request->request->get('pricedOption')) {
+        $pricedOption = $request->request->get('pricedOption');
+        $pricedObject[$i]['option'] = $pricedOption[$i];
+      }
+
+      if ($request->request->get('pricedColor')) {
+        $pricedColor = $request->request->get('pricedColor');
+        $pricedObject[$i]['color'] = $pricedColor[$i];
+      }
+      $pricedObject[$i]['price'] = $request->request->get('price')[$i];
+      $pricedObject[$i]['amount'] = $request->request->get('amount')[$i];
+    }
+
+
+    // fill pricelessObject
+    if (count($request->request->get('price')) > $iterationCount) {
+      if ($request->request->get('pricelessNormal')) {
+        $pricelessNormal = $request->request->get('pricelessNormal');
+        $pricelessObject['normal'] = $pricelessNormal;
+      }
+
+      if ($request->request->get('pricelessNested')) {
+        $pricelessNested = $request->request->get('pricelessNested');
+        $loopLength = count($pricelessNested);
+        $pricelessObject['nested'] = [];
+
+        for ($x = 0; $x < $loopLength; $x++) {
+          array_push($pricelessObject['nested'], $pricelessNested[$x]);
+        }
+      }
+
+      if ($request->request->get('pricelessOption')) {
+        $pricelessOption = $request->request->get('pricelessOption');
+        $pricelessObject['option'] = $pricelessOption;
+      }
+
+      if ($request->request->get('pricelessColor')) {
+        $pricelessColor = $request->request->get('pricelessColor');
+        $pricelessObject['color'] = $pricelessColor;
+      }
+
+      $prices = $request->request->get('price');
+      $amounts = $request->request->get('amount');
+      $pricelessObject['price'] = end($prices);
+      $pricelessObject['amount'] = end($amounts);
+    }
+
+    // dd($pricedObject);
+    // dd($pricelessObject);
+
+    $input['priced'] = json_encode($pricedObject);
+    $input['priceless'] = json_encode($pricelessObject);
+    // dd($input);
     $product = $this->productRepository->create($input);
     $product->update(['mainImagePath' => Storage::url($coverPath)]);
+    // $product->update(['priced' => json_encode($pricedObject)]);
+    // $product->update(['priceless' => json_encode($pricelessObject)]);
 
     Flash::success('Product saved successfully.');
 

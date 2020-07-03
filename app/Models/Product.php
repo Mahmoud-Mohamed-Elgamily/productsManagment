@@ -20,6 +20,8 @@ class Product extends Model
         'sale',
         'mainImagePath',
         // 'criteria_id'
+        'priced',
+        'priceless',
     ];
 
     protected $casts = [
@@ -29,7 +31,7 @@ class Product extends Model
         'vendor' => 'string',
         'sale' => 'integer',
         'mainImagePath' => 'string',
-        'criteria_id' => 'integer'
+        // 'criteria_id' => 'integer'
     ];
 
     public static $rules = [
@@ -37,7 +39,7 @@ class Product extends Model
         'description' => 'required|min:25',
         'vendor' => 'required',
         'mainImagePath' => 'required',
-        'criteria_id' => 'required'
+        // 'criteria_id' => 'required'
     ];
 
     public function criterias()
