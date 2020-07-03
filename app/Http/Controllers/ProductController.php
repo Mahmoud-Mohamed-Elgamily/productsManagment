@@ -138,7 +138,10 @@ class ProductController extends AppBaseController
     $product->update(['mainImagePath' => Storage::url($coverPath)]);
     // $product->update(['priced' => json_encode($pricedObject)]);
     // $product->update(['priceless' => json_encode($pricelessObject)]);
-
+    $pricedIds = $request->request->get('pricedIds');
+    $pricelessIds = $request->request->get('pricelessIds');
+    // dd($pricedIds .','. $pricelessIds);
+    $product->criterias()->attach(array_unique(explode(',',$pricedIds .','. $pricelessIds)));
     Flash::success('Product saved successfully.');
 
     return redirect(route('products.index'));

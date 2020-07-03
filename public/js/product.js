@@ -82,6 +82,7 @@ window.addEventListener('DOMContentLoaded', function () {
     $('#PricedContainer').html($(`
     <h3> new item </h3>
     <input class="form-control" style="display:none;" name="pricedCount" min="1" value="1" type="number" id="pricedCount">
+    <input class="form-control" style="display:none;" name="pricedIds" min="1" value="${PricedCriteriasIds}" type="text" id="pricedCount">
 
     <div class="row newPricedCriteria">
       ${fields.join('')}
@@ -129,6 +130,8 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     })
     $('#PricelessContainer').html($(`
+    <input class="form-control" style="display:none;" name="pricelessIds" min="1" value="${pricelessCriteriasIds}" type="text" id="pricedCount">
+
     <h3> new item </h3>
     <div class="row">
       <div class="form-group col-sm-2">
