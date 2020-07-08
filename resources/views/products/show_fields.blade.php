@@ -24,14 +24,19 @@
 
 <!-- Mainimagepath Field -->
 <div class="form-group">
-    {!! Form::label('mainImagePath', 'Mainimagepath:') !!}
-    <p>{{ $product->mainImagePath }}</p>
+    {!! Form::label('main image', 'main image:') !!}
+    <img src="{{ $product->mainImagePath }}" height="50">
 </div>
 
 <!-- Criteria Id Field -->
 <div class="form-group">
-    {!! Form::label('criteria_id', 'Criteria Id:') !!}
-    <p>{{ $product->criteria_id }}</p>
+    {!! Form::label('priced', 'priced products:') !!}
+    <p> {{ $product->priced }} </p>
+</div>
+
+<div class="form-group">
+    {!! Form::label('priceless', 'priceless products:') !!}
+    <p> {{ $product->priceless }} </p>
 </div>
 
 <!-- Created At Field -->

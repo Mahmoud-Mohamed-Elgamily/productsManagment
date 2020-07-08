@@ -7,43 +7,44 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use SoftDeletes;
+  use SoftDeletes;
 
-    public $table = 'products';
+  public $table = 'products';
 
-    protected $dates = ['deleted_at'];
+  protected $dates = ['deleted_at'];
 
-    public $fillable = [
-        'name',
-        'description',
-        'vendor',
-        'sale',
-        'mainImagePath',
-        // 'criteria_id'
-        'priced',
-        'priceless',
-    ];
+  public $fillable = [
+    'name',
+    'description',
+    'vendor',
+    'sale',
+    'mainImagePath',
+    // 'criteria_id'
+    'priced',
+    'priceless',
+  ];
 
-    protected $casts = [
-        'id' => 'integer',
-        'name' => 'string',
-        'description' => 'string',
-        'vendor' => 'string',
-        'sale' => 'integer',
-        'mainImagePath' => 'string',
-        // 'criteria_id' => 'integer'
-    ];
+  protected $casts = [
+    'id' => 'integer',
+    'name' => 'string',
+    'description' => 'string',
+    'vendor' => 'string',
+    'sale' => 'integer',
+    'mainImagePath' => 'string',
+    // 'criteria_id' => 'integer'
+  ];
 
-    public static $rules = [
-        'name' => 'required|min:3|unique:products',
-        'description' => 'required|min:25',
-        'vendor' => 'required',
-        'mainImagePath' => 'required',
-        // 'criteria_id' => 'required'
-    ];
+  public static $rules = [
+    'name' => 'required|min:3|unique:products',
+    'description' => 'required|min:25',
+    'vendor' => 'required',
+    'mainImagePath' => 'required',
+    'PricedCriteria_id' => 'required',
+    // 'criteria_id' => 'required'
+  ];
 
-    public function criterias()
-    {
-        return $this->belongsToMany(\App\Models\Criteria::class)->as('subscription')->withTimestamps();
-    }
+  public function criterias()
+  {
+    return $this->belongsToMany(\App\Models\Criteria::class)->as('subscription')->withTimestamps();
+  }
 }

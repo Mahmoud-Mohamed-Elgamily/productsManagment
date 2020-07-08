@@ -1,4 +1,9 @@
 <!-- Name Field -->
+
+
+<script>
+  let products = <?php echo($product ?? '[]') ?>;
+</script>
 <div class="form-group col-sm-6">
   {!! Form::label('name', 'Name:') !!}
   {!! Form::text('name', null, ['class' => 'form-control','minlength' => 3]) !!}
@@ -31,27 +36,29 @@
 
 <!-- Criteria Id Field -->
 <section id="PricedContainer" class="form-group col-sm-6">
+  <div id="pricedSelectMenu">
+    <h3>Select Priced Criteria</h3>
+    <div class="PricedCriteria">
+      {!! Form::select('PricedCriteria_id[]', $criteriaItems, null, ['class' => 'form-control','multiple'=>'multiple']) !!}
+    </div>
 
-  <h3>Select Priced Criteria</h3>
-  <div class="PricedCriteria">
-    {!! Form::select('PricedCriteria_id[]', $criteriaItems, null, ['class' => 'form-control']) !!}
+    <!-- <button class="btn btn-primary" id="newPricedCriteria"> Add Priced Criteria</button> -->
+    <button class="btn btn-primary" id="ShowPricedAddForm"> Done</button>
+
   </div>
-
-  <button class="btn btn-primary" id="newPricedCriteria"> Add Priced Criteria</button>
-  <button class="btn btn-primary" id="ShowPricedAddForm"> Done</button>
 
 </section>
 
 <section id="PricelessContainer" class="form-group col-sm-6">
+  <div id="pricelessSelectMenu">
+    <h3>Select Priceless Criteria</h3>
+    <div class="PricelessCriteria">
+      {!! Form::select('PricelessCriteria_id[]', $criteriaItems, null, ['class' => 'form-control','multiple'=>'multiple']) !!}
+    </div>
 
-  <h3>Select Priceless Criteria</h3>
-  <div class="PricelessCriteria">
-    {!! Form::select('PricelessCriteria_id[]', $criteriaItems, null, ['class' => 'form-control']) !!}
+    <!-- <button class="btn btn-primary" id="newPricelessCriteria"> Add Priceless Criteria</button> -->
+    <button class="btn btn-primary" id="ShowPricelessAddForm"> Done</button>
   </div>
-
-  <button class="btn btn-primary" id="newPricelessCriteria"> Add Priceless Criteria</button>
-  <button class="btn btn-primary" id="ShowPricelessAddForm"> Done</button>
-
 </section>
 
 <!-- Submit Field -->
