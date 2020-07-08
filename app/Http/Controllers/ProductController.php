@@ -55,6 +55,8 @@ class ProductController extends AppBaseController
    */
   public function store(CreateProductRequest $request)
   {
+    // dd($request);
+
     $coverPath = $request->file('mainImagePath')->store('public/images');
 
     $input = $request->all();
@@ -141,7 +143,8 @@ class ProductController extends AppBaseController
     $pricedIds = $request->request->get('pricedIds');
     $pricelessIds = $request->request->get('pricelessIds');
     // dd($pricedIds .','. $pricelessIds);
-    $product->criterias()->attach(array_unique(explode(',',$pricedIds .','. $pricelessIds)));
+    $product->criterias()->attach(explode(',', $pricedIds), ['pricedBool' => true]);
+    $product->criterias()->attach(explode(',', $pricelessIds), ['pricedBool' => false]);
     Flash::success('Product saved successfully.');
 
     return redirect(route('products.index'));
@@ -177,7 +180,7 @@ class ProductController extends AppBaseController
   public function edit($id)
   {
     $product = $this->productRepository->find($id);
-
+    $product->criterias;
     if (empty($product)) {
       Flash::error('Product not found');
 
@@ -195,8 +198,9 @@ class ProductController extends AppBaseController
    *
    * @return Response
    */
-  public function update($id, UpdateProductRequest $request)
+  public function update($id, Request $request)
   {
+    // dd($request);
     $product = $this->productRepository->find($id);
 
     if (empty($product)) {
@@ -204,6 +208,14 @@ class ProductController extends AppBaseController
 
       return redirect(route('products.index'));
     }
+
+    $pricedIds = $request->request->get('PricedCriteria_id');
+    $pricelessIds = $request->request->get('PricelessCriteria_id');
+    // dd($pricedIds .','. $pricelessIds);
+    $product->criterias()->sync($pricedIds, ['pricedBool' => true]);
+    $product->criterias()->sync($pricelessIds, ['pricedBool' => false]);
+
+
 
     $product = $this->productRepository->update($request->all(), $id);
 

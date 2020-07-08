@@ -45,6 +45,6 @@ class Product extends Model
 
   public function criterias()
   {
-    return $this->belongsToMany(\App\Models\Criteria::class)->as('subscription')->withTimestamps();
+    return $this->belongsToMany(\App\Models\Criteria::class)->withPivot('pricedBool')->withTimestamps();
   }
 }

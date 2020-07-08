@@ -21,9 +21,11 @@ window.addEventListener('DOMContentLoaded', function () {
     `;
   }
 
-  const addNested = (data, type = 'priced') => {
-    let inputFields = data.details.map(detail =>
-      `<input class="form-control" placeholder="${detail}" minlength="3" name="${type}Nested[]" type="text" required>`
+  const addNested = (data, value, type = 'priced') => {
+    let inputFields = data.details.map(detail => {
+      value ? output = `value="${detail}"` : output = `placeholder="${detail}"`;
+      return `<input class="form-control" ${output}  minlength="3" name="${type}Nested[]" type="text" required>`
+    }
     );
 
     return `
@@ -34,7 +36,7 @@ window.addEventListener('DOMContentLoaded', function () {
     `;
   }
 
-  const addOptions = (data, type = 'priced', multiple = '') => {
+  const addOption = (data, type = 'priced', multiple = '') => {
     let options = data.details.map(detail => `<option value="${detail}">${detail}</option>`);
 
     return `
@@ -60,10 +62,30 @@ window.addEventListener('DOMContentLoaded', function () {
     `;
   }
 
+  const addPrice = () => {
+    `
+    <div class="form-group col-sm-2">
+      <label for="price">Price:</label>
+      <input class="form-control" name="price[]" min="1" type="number" id="price" required>
+    </div>
+    `
+  }
+
+  const addAmount = () => {
+    `
+    <div class="form-group col-sm-2">
+      <label for="amount">amount:</label>
+      <input class="form-control" name="amount[]" min="1" type="number" id="amount" required>
+    </div>
+      `
+  }
+
   const deleteRow = () => {
     $('.deleteRow').last().click(function (e) {
       e.preventDefault();
-      $(this).parent().remove()
+      let ok = confirm('are you sure ?');
+      if (ok)
+        $(this).parent().remove()
     })
   }
   const showPricedForm = (criterias) => {
@@ -78,12 +100,10 @@ window.addEventListener('DOMContentLoaded', function () {
           return addNested(item);
           break;
         case 'options':
-          return addOptions(item);
+          return addOption(item);
           break;
         case 'color':
           return addColor(item);
-          break;
-        default:
           break;
       }
     })
@@ -129,15 +149,13 @@ window.addEventListener('DOMContentLoaded', function () {
           return addNormal(item, 'priceless');
           break;
         case 'nested':
-          return addNested(item, 'priceless');
+          return addNested(item, false,'priceless');
           break;
         case 'options':
-          return addOptions(item, 'priceless', 'multiple');
+          return addOption(item, 'priceless', 'multiple');
           break;
         case 'color':
           return addColor(item, 'priceless', 'multiple');
-          break;
-        default:
           break;
       }
     })
@@ -186,12 +204,106 @@ window.addEventListener('DOMContentLoaded', function () {
 
   // Edit product section
 
-// console.log(products)
-  if(!$.isEmptyObject(products)){
-    $('#PricedContainer').append(
+  // console.log(products)
+  if (!$.isEmptyObject(products)) {
+    products.criterias.map(criteria => {
+      criteria.pivot.pricedBool ?
+        $(`select[name="PricedCriteria_id[]"] option[value=${criteria.pivot.criteria_id}]`).prop("selected", true)
+        : $(`select[name="PricelessCriteria_id[]"] option[value=${criteria.pivot.criteria_id}]`).prop("selected", true)
+    })
 
-    )
-    console.log(products)
+    let pricedArr = JSON.parse(products.priced)
+
+    pricedArr.map((ele, index) => {
+      let fields = Object.keys(ele).map(entry => {
+        data = pricedArr[index][entry];
+        if (typeof (data) == "string")
+          data = [data];
+        switch (entry) {
+          case 'normal':
+            return addNormal({ details: [pricedArr[index][entry]] });
+            break;
+          case 'nested':
+            return addNested({ details: data }, value = true);
+            break;
+          case 'options':
+            return addOption({ details: data });
+            break;
+          case 'color':
+            return addColor({ details: data });
+            break;
+          case 'price':
+            return `<div class="form-group col-sm-2">
+              <label for="price">Price:</label>
+              <input class="form-control" value="${pricedArr[index][entry]}" name="price[]" min="1" type="number" id="price" required>
+            </div>`
+            break;
+          case 'amount':
+            return `<div class="form-group col-sm-2">
+              <label for="amount">amount:</label>
+              <input class="form-control" value="${pricedArr[index][entry]}" name="amount[]" min="1" type="number" id="amount" required>
+            </div>`
+            break;
+        }
+      })
+      $('#PricedContainer').append($(`
+          <h3> new item </h3>
+          <input class="form-control" style="display:none;" name="pricedCount" min="1" value="1" type="number" id="pricedCount" required>
+          <input class="form-control" style="display:none;" name="pricedIds" min="1" value="${PricedCriteriasIds}" type="text" id="pricedCount" required>
+
+          <div class="row newPricedCriteria">
+            ${fields.join('')}
+            <button class="btn btn-danger deleteRow"> x </button>
+          </div>
+          `));
+    })
+
+
+    if (products.priceless) {
+      let priclessArr = JSON.parse(products.priceless)
+
+      let fields = Object.keys(priclessArr).map((entry) => {
+
+        switch (entry) {
+          case 'normal':
+            return addNormal({ details: [priclessArr[entry]] });
+            break;
+          case 'nested':
+            return addNested({ details: [priclessArr[entry]] },true);
+            break;
+          case 'options':
+            return addOption({ details: [priclessArr[entry]] });
+            break;
+          case 'color':
+            return addColor({ details: [priclessArr[entry]] });
+            break;
+          case 'price':
+            return `<div class="form-group col-sm-2">
+              <label for="price">Price:</label>
+              <input class="form-control" value="${priclessArr[entry]}" name="price[]" min="1" type="number" id="price" required>
+            </div>`
+            break;
+          case 'amount':
+            return `<div class="form-group col-sm-2">
+              <label for="amount">amount:</label>
+              <input class="form-control" value="${priclessArr[entry]}" name="amount[]" min="1" type="number" id="amount" required>
+            </div>`
+            break;
+        }
+
+      })
+      $('#PricelessContainer').append($(`
+        <h3> new item </h3>
+        <input class="form-control" style="display:none;" name="pricedCount" min="1" value="1" type="number" id="pricedCount" required>
+        <input class="form-control" style="display:none;" name="pricedIds" min="1" value="${PricedCriteriasIds}" type="text" id="pricedCount" required>
+
+        <div class="row newPricedCriteria">
+          ${fields.join('')}
+          <button class="btn btn-danger deleteRow"> x </button>
+        </div>
+        <button class="btn btn-primary" id="newPricedForm"> + </button>`));
+
+    }
   }
 
 })
