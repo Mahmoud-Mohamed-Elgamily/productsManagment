@@ -14,7 +14,7 @@ class AddPricedToCriteriaProductTable extends Migration
   public function up()
   {
     Schema::table('criteria_product', function (Blueprint $table) {
-      $table->boolean('pricedBool')->required();
+      $table->boolean('pricedBool')->required()->default(true);
     });
   }
 

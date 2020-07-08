@@ -123,7 +123,7 @@ window.addEventListener('DOMContentLoaded', function () {
         <label for="amount">amount:</label>
         <input class="form-control" name="amount[]" min="1" type="number" id="amount" required>
       </div>
-      <button class="btn btn-danger deleteRow"> x </button>
+      <button class="btn btn-danger deleteRow" style="margin-top: 24px;"> x </button>
     </div>
     <button class="btn btn-primary" id="newPricedForm"> + </button>`));
 
@@ -149,7 +149,7 @@ window.addEventListener('DOMContentLoaded', function () {
           return addNormal(item, 'priceless');
           break;
         case 'nested':
-          return addNested(item, false,'priceless');
+          return addNested(item, false, 'priceless');
           break;
         case 'options':
           return addOption(item, 'priceless', 'multiple');
@@ -160,7 +160,6 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     })
     $('#PricelessContainer').html($(`
-    <input class="form-control" style="display:none;" name="pricelessIds" min="1" value="${pricelessCriteriasIds}" type="text" id="pricedCount" required>
 
     <h3> new item </h3>
     <div class="row">
@@ -206,6 +205,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
   // console.log(products)
   if (!$.isEmptyObject(products)) {
+    console.log(products)
     products.criterias.map(criteria => {
       criteria.pivot.pricedBool ?
         $(`select[name="PricedCriteria_id[]"] option[value=${criteria.pivot.criteria_id}]`).prop("selected", true)
@@ -226,7 +226,7 @@ window.addEventListener('DOMContentLoaded', function () {
           case 'nested':
             return addNested({ details: data }, value = true);
             break;
-          case 'options':
+          case 'option':
             return addOption({ details: data });
             break;
           case 'color':
@@ -247,13 +247,10 @@ window.addEventListener('DOMContentLoaded', function () {
         }
       })
       $('#PricedContainer').append($(`
-          <h3> new item </h3>
-          <input class="form-control" style="display:none;" name="pricedCount" min="1" value="1" type="number" id="pricedCount" required>
-          <input class="form-control" style="display:none;" name="pricedIds" min="1" value="${PricedCriteriasIds}" type="text" id="pricedCount" required>
-
+          <br>
           <div class="row newPricedCriteria">
             ${fields.join('')}
-            <button class="btn btn-danger deleteRow"> x </button>
+            <button class="btn btn-danger deleteRow" style="margin-top: 24px;"> x </button>
           </div>
           `));
     })
@@ -263,19 +260,22 @@ window.addEventListener('DOMContentLoaded', function () {
       let priclessArr = JSON.parse(products.priceless)
 
       let fields = Object.keys(priclessArr).map((entry) => {
-
+        data = priclessArr[entry];
+        if (typeof (data) == "string")
+          data = [data];
         switch (entry) {
           case 'normal':
             return addNormal({ details: [priclessArr[entry]] });
             break;
           case 'nested':
-            return addNested({ details: [priclessArr[entry]] },true);
+            console.log(priclessArr[entry])
+            return addNested({ details: data }, true);
             break;
-          case 'options':
-            return addOption({ details: [priclessArr[entry]] });
+          case 'option':
+            return addOption({ details: data });
             break;
           case 'color':
-            return addColor({ details: [priclessArr[entry]] });
+            return addColor({ details: data });
             break;
           case 'price':
             return `<div class="form-group col-sm-2">
@@ -293,15 +293,12 @@ window.addEventListener('DOMContentLoaded', function () {
 
       })
       $('#PricelessContainer').append($(`
-        <h3> new item </h3>
-        <input class="form-control" style="display:none;" name="pricedCount" min="1" value="1" type="number" id="pricedCount" required>
-        <input class="form-control" style="display:none;" name="pricedIds" min="1" value="${PricedCriteriasIds}" type="text" id="pricedCount" required>
 
-        <div class="row newPricedCriteria">
-          ${fields.join('')}
-          <button class="btn btn-danger deleteRow"> x </button>
-        </div>
-        <button class="btn btn-primary" id="newPricedForm"> + </button>`));
+      <h3> new item </h3>
+      <div class="row newPricelessCriteria">
+        ${fields.join('')}
+
+      </div>`));
 
     }
   }
